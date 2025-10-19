@@ -24,16 +24,16 @@ export const helloWorld = inngest.createFunction(
       await new Promise((resolve) => setTimeout(resolve, 8000));
     });
 
-    // const codeAgent = createAgent({
-    //   name: 'code-agent',
-    //   system:
-    //     'You are an expert Next.js developer. You write redable, maintanable code. You write simple Next.js & React snippets',
-    //   model: gemini({ model: 'gemini-2.5-flash' }),
-    // });
+    const codeAgent = createAgent({
+      name: 'code-agent',
+      system:
+        'You are an expert Next.js developer. You write redable, maintanable code. You write simple Next.js & React snippets',
+      model: gemini({ model: 'gemini-2.0-flash-lite' }),
+    });
 
-    // const { output } = await codeAgent.run(
-    //   `Write the following snippet ${event.data.value}`
-    // );
+    const { output } = await codeAgent.run(
+      `Write the following snippet ${event.data.value}`
+    );
 
     const sandboxURL = await step.run('get-sandbox-url', async () => {
       const sandbox = await getSandbox(sandboxId);
