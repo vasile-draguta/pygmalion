@@ -3,14 +3,15 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useTRPC } from '@/trpc/client';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 const HomePage = () => {
   const [value, setValue] = useState('');
 
   const trpc = useTRPC();
-  const invoke = useMutation(trpc.invoke.mutationOptions({}));
+  const { data: messages } = useQuery(trpc.messages.getMany.queryOptions());
+  const invoke = useMutation(trpc.messages.create.mutationOptions({}));
 
   return (
     <div className='p-4 max-w-7xl mx-auto'>
