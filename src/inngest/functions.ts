@@ -1,11 +1,11 @@
 import { z } from 'zod';
 import { inngest } from './client';
 import {
-  gemini,
   createAgent,
   createTool,
   createNetwork,
   type Tool,
+  gemini,
 } from '@inngest/agent-kit';
 import { Sandbox } from 'e2b';
 import { getSandbox, lastAssistantTextMessageContext } from './utils';
@@ -22,7 +22,7 @@ export const codeAgentFunction = inngest.createFunction(
   { event: 'code-agent' },
   async ({ event, step }) => {
     const sandboxId = await step.run('create-sandbox', async () => {
-      const sandbox = await Sandbox.create('gnb2vrd0gwdeoiamhnue');
+      const sandbox = await Sandbox.create('o7te0ovt3mepwlpibqie');
       return sandbox.sandboxId;
     });
 
@@ -30,14 +30,8 @@ export const codeAgentFunction = inngest.createFunction(
       name: 'code-agent',
       system: PROMPT,
       model: gemini({
-        model: 'gemini-2.5-flash-lite-preview-06-17',
-        apiKey: process.env.GOOGLE_API_KEY,
-        defaultParameters: {
-          generationConfig: {
-            temperature: 0.6,
-            topP: 0.7,
-          },
-        },
+        model: 'gemini-2.5-flash',
+        apiKey: process.env.GEMINI_API_KEY,
       }),
       tools: [
         createTool({
@@ -162,45 +156,6 @@ export const codeAgentFunction = inngest.createFunction(
     const isError =
       !result.state.data.summary ||
       Object.keys(result.state.data.files).length === 0;
-
-    await step.run('start-nextjs-server', async () => {
-      const sandbox = await getSandbox(sandboxId);
-
-      // Start the dev server in the background
-      const process = await sandbox.commands.run(
-        'cd /home/user && npm run dev -- --hostname 0.0.0.0',
-        { background: true }
-      );
-
-      // Wait for the server to be ready by polling
-      let ready = false;
-      let attempts = 0;
-      const maxAttempts = 30;
-
-      while (!ready && attempts < maxAttempts) {
-        try {
-          const response = await sandbox.commands.run(
-            'curl -s -o /dev/null -w "%{http_code}" http://localhost:3000'
-          );
-          if (
-            response.stdout.trim() === '200' ||
-            response.stdout.trim() === '404'
-          ) {
-            ready = true;
-          }
-        } catch (e) {
-          // Server not ready yet
-        }
-        if (!ready) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          attempts++;
-        }
-      }
-
-      if (!ready) {
-        throw new Error('Next.js server failed to start');
-      }
-    });
 
     const sandboxURL = await step.run('get-sandbox-url', async () => {
       const sandbox = await getSandbox(sandboxId);
