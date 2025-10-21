@@ -19,7 +19,7 @@ interface AgentState {
 
 export const codeAgentFunction = inngest.createFunction(
   { id: 'code-agent' },
-  { event: 'code-agent/run' },
+  { event: 'code-agent' },
   async ({ event, step }) => {
     const sandboxId = await step.run('create-sandbox', async () => {
       const sandbox = await Sandbox.create('gnb2vrd0gwdeoiamhnue');
@@ -215,6 +215,7 @@ export const codeAgentFunction = inngest.createFunction(
             content: 'Something went wrong. Please try again.',
             role: 'ASSISTANT',
             type: 'ERROR',
+            projectId: event.data.projectId,
           },
         });
       }
@@ -224,6 +225,7 @@ export const codeAgentFunction = inngest.createFunction(
           content: result.state.data.summary,
           role: 'ASSISTANT',
           type: 'RESULT',
+          projectId: event.data.projectId,
           fragment: {
             create: {
               sandboxUrl: sandboxURL,
