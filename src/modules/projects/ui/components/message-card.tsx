@@ -93,7 +93,7 @@ const AssistantMessage = ({
           alt='logo'
           width={18}
           height={18}
-          className='shrink-0'
+          className='shrink-0 dark:invert'
         />
         <span className='text-sm font-medium'>Mishulika</span>
         <span className='text-xm text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100'>
