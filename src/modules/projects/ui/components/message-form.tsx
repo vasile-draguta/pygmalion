@@ -98,8 +98,11 @@ export const MessageForm = ({ projectId }: Props) => {
             &nbsp;to submit
           </div>
           <Button className={cn('size-8 rounded-full ')} disabled={isDisabled}>
-            {isPending && <Loader2Icon className='size-4 animate-spin' />}
-            <ArrowUpIcon />
+            {isPending ? (
+              <Loader2Icon className='size-4 animate-spin' />
+            ) : (
+              <ArrowUpIcon />
+            )}
           </Button>
         </div>
       </form>
