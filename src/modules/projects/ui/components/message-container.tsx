@@ -44,6 +44,10 @@ export const MessagesContainter = ({
 
   const lastMessage = messages[messages.length - 1];
   const isLastMessageUser = lastMessage?.role === 'USER';
+  const isRecentMessage =
+    lastMessage?.createAt &&
+    Date.now() - new Date(lastMessage.createAt).getTime() < 5 * 60 * 1000; // 5 minutes
+  const showLoading = isLastMessageUser && isRecentMessage;
 
   return (
     <div className='flex flex-col flex-1 min-h-0'>
@@ -63,7 +67,7 @@ export const MessagesContainter = ({
               type={message.type}
             />
           ))}
-          {isLastMessageUser && <MessageLoading />}
+          {showLoading && <MessageLoading />}
           <div ref={bottomRef} />
         </div>
       </div>
