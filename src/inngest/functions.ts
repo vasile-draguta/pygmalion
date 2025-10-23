@@ -31,7 +31,7 @@ export const codeAgentFunction = inngest.createFunction(
         name: 'code-agent',
         system: PROMPT,
         model: gemini({
-          model: 'gemini-2.5-flash-lite-preview-06-17',
+          model: 'gemini-2.5-flash',
           apiKey: process.env.GEMINI_API_KEY,
         }),
         tools: [
