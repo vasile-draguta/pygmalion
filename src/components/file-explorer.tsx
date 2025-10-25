@@ -128,7 +128,7 @@ export const FileExplorer = ({ files }: FileExplorerProps) => {
 
   return (
     <ResizablePanelGroup direction='horizontal'>
-      <ResizablePanel defaultSize={30} minSize={30} className='bg-sidebar'>
+      <ResizablePanel defaultSize={30} minSize={20} className='bg-sidebar'>
         <TreeView
           data={treeData}
           value={selectedFile}

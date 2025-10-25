@@ -16,7 +16,7 @@ const Page = () => {
           />
         </div>
         <h1 className='text-2xl md:text-5xl font-bold text-center'>
-          Let Mishulika build something
+          Let Pygmalion build something
         </h1>
         <p className='text-lg md:text-cl text-muted-foreground text-center'>
           Create apps and website by chatting with AI
