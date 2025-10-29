@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { ProjectForm } from '@/modules/home/ui/project-form';
-import { ProjectList } from '@/modules/home/ui/project-list';
+import { ProjectForm } from '@/modules/home/ui/components/project-form';
+import { ProjectList } from '@/modules/home/ui/components/project-list';
 
 const Page = () => {
   return (
