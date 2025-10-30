@@ -127,50 +127,52 @@ export const FileExplorer = ({ files }: FileExplorerProps) => {
   }, [selectedFile, files]);
 
   return (
-    <ResizablePanelGroup direction='horizontal'>
-      <ResizablePanel defaultSize={30} minSize={20} className='bg-sidebar'>
-        <TreeView
-          data={treeData}
-          value={selectedFile}
-          onSelect={handleFileSelect}
-        />
-      </ResizablePanel>
-      <ResizableHandle className='hover:bg-primary transition-colors' />
-      <ResizablePanel defaultSize={70} minSize={50}>
-        {selectedFile && files[selectedFile] ? (
-          <div className='h-full w-full flex flex-col'>
-            <div className='border-b bg-sidebar px-4 py-2 flex justify-between items-center gap-x-2'>
-              <FileBreadcrumb filePath={selectedFile} />
+    <div className='h-full w-full overflow-hidden isolate'>
+      <ResizablePanelGroup direction='horizontal' className='h-full'>
+        <ResizablePanel defaultSize={30} minSize={20} className='bg-sidebar'>
+          <TreeView
+            data={treeData}
+            value={selectedFile}
+            onSelect={handleFileSelect}
+          />
+        </ResizablePanel>
+        <ResizableHandle className='hover:bg-primary transition-colors' />
+        <ResizablePanel defaultSize={70} minSize={50}>
+          {selectedFile && files[selectedFile] ? (
+            <div className='h-full w-full flex flex-col'>
+              <div className='border-b bg-sidebar px-4 py-2 flex justify-between items-center gap-x-2'>
+                <FileBreadcrumb filePath={selectedFile} />
 
-              <Hint text='Copy to clipboard' side='bottom'>
-                <Button
-                  variant='outline'
-                  size='icon'
-                  className='ml-auto text-muted-foreground transition-transform active:scale-85 active:duration-200'
-                  onClick={handleCopyToClipboard}
-                  disabled={copied}
-                >
-                  {copied ? (
-                    <CheckIcon className='size-4 animate-in fade-in-0 duration-500' />
-                  ) : (
-                    <CopyIcon className='size-4 animate-in fade-in-0 duration-500' />
-                  )}
-                </Button>
-              </Hint>
+                <Hint text='Copy to clipboard' side='bottom'>
+                  <Button
+                    variant='outline'
+                    size='icon'
+                    className='ml-auto text-muted-foreground transition-transform active:scale-85 active:duration-200'
+                    onClick={handleCopyToClipboard}
+                    disabled={copied}
+                  >
+                    {copied ? (
+                      <CheckIcon className='size-4 animate-in fade-in-0 duration-500' />
+                    ) : (
+                      <CopyIcon className='size-4 animate-in fade-in-0 duration-500' />
+                    )}
+                  </Button>
+                </Hint>
+              </div>
+              <div className='flex-1 overflow-auto'>
+                <CodeView
+                  lang={getLanguageFromExtension(selectedFile)}
+                  code={files[selectedFile]}
+                />
+              </div>
             </div>
-            <div className='flex-1 overflow-auto'>
-              <CodeView
-                lang={getLanguageFromExtension(selectedFile)}
-                code={files[selectedFile]}
-              />
+          ) : (
+            <div className='flex h-full items-center justify-center text-muted-foreground'>
+              Select a file to view it&apos;s content
             </div>
-          </div>
-        ) : (
-          <div className='flex h-full items-center justify-center text-muted-foreground'>
-            Select a file to view it&apos;s content
-          </div>
-        )}
-      </ResizablePanel>
-    </ResizablePanelGroup>
+          )}
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
   );
 };

@@ -26,6 +26,7 @@ export const codeAgentFunction = inngest.createFunction(
     try {
       const sandboxId = await step.run('create-sandbox', async () => {
         const sandbox = await Sandbox.create('o7te0ovt3mepwlpibqie');
+        await sandbox.setTimeout(600_000);
         return sandbox.sandboxId;
       });
 
@@ -40,6 +41,7 @@ export const codeAgentFunction = inngest.createFunction(
             orderBy: {
               createAt: 'desc',
             },
+            take: 5,
           });
           for (const message of messages) {
             formatedMessages.push({
@@ -48,7 +50,7 @@ export const codeAgentFunction = inngest.createFunction(
               content: message.content,
             });
           }
-          return formatedMessages;
+          return formatedMessages.reverse();
         }
       );
 
