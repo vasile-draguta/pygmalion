@@ -94,6 +94,7 @@ const AssistantMessage = ({
           width={18}
           height={18}
           className='shrink-0 dark:invert'
+          suppressHydrationWarning
         />
         <span className='text-sm font-medium'>Pygmalion</span>
         <span className='text-xm text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100'>

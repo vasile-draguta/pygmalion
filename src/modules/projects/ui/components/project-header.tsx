@@ -46,6 +46,7 @@ export const ProjectHeader = ({ projectId }: Props) => {
               width={18}
               height={18}
               className='dark:invert'
+              suppressHydrationWarning
             />
             <span className='text-sm font-medium'>{project.name}</span>
             <ChevronDownIcon />

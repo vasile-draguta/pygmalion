@@ -13,6 +13,7 @@ const Page = () => {
             width={50}
             height={50}
             className='hidden md:block dark:invert'
+            suppressHydrationWarning
           />
         </div>
         <h1 className='text-2xl md:text-5xl font-bold text-center'>

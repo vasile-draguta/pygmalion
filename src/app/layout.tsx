@@ -32,6 +32,11 @@ export default function RootLayout({
       signUpUrl='/sign-up'
       signInFallbackRedirectUrl='/'
       signUpFallbackRedirectUrl='/'
+      appearance={{
+        variables: {
+          colorPrimary: 'oklch(0.8078 0 0)',
+        },
+      }}
     >
       <TRPCReactProvider>
         <html lang='en' suppressHydrationWarning>

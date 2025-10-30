@@ -2,7 +2,6 @@
 
 import { z } from 'zod';
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextAreaAutosize from 'react-textarea-autosize';
@@ -15,6 +14,7 @@ import { Form, FormField } from '@/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { PROJECT_TEMPLATES } from '../../constants';
 import { useClerk } from '@clerk/nextjs';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   message: z
@@ -32,10 +32,17 @@ export const ProjectForm = () => {
     trpc.projects.create.mutationOptions({
       onSuccess: (data) => {
         querryClient.invalidateQueries(trpc.projects.getMany.queryOptions());
+        querryClient.invalidateQueries(trpc.usage.status.queryOptions());
         router.push(`/projects/${data.id}`);
       },
       onError: (error) => {
-        if (error.data) router.push('/sign-in');
+        if (error.data?.code === 'UNAUTHORIZED') {
+          clerk.redirectToSignIn();
+        }
+        if (error.data?.code === 'TOO_MANY_REQUESTS') {
+          router.push('/pricing');
+          toast.error('You have reached the maximum number of requests!');
+        }
       },
     })
   );

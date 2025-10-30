@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils';
 import { useTRPC } from '@/trpc/client';
 import { Button } from '@/components/ui/button';
 import { Form, FormField } from '@/components/ui/form';
+import { Usage } from './usage';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   projectId: string;
@@ -25,6 +27,7 @@ const formSchema = z.object({
 export const MessageForm = ({ projectId }: Props) => {
   const trpc = useTRPC();
   const querryClient = useQueryClient();
+  const router = useRouter();
   const createMessage = useMutation(
     trpc.messages.create.mutationOptions({
       onSuccess: () => {
@@ -32,9 +35,14 @@ export const MessageForm = ({ projectId }: Props) => {
         querryClient.invalidateQueries(
           trpc.messages.getMany.queryOptions({ projectId })
         );
+        querryClient.invalidateQueries(trpc.usage.status.queryOptions());
       },
       onError: (error) => {
         toast.error(error.message);
+
+        if (error.data?.code === 'TOO_MANY_REQUESTS') {
+          router.push('/pricing');
+        }
       },
     })
   );
@@ -45,9 +53,9 @@ export const MessageForm = ({ projectId }: Props) => {
       message: '',
     },
   });
-
+  const { data: usage } = useQuery(trpc.usage.status.queryOptions());
   const [isFocused, setIsFocused] = useState(false);
-  const showUsage = false;
+  const showUsage = !!usage;
   const isPending = createMessage.isPending;
   const isDisabled = isPending || !form.formState.isValid;
 
@@ -60,6 +68,12 @@ export const MessageForm = ({ projectId }: Props) => {
 
   return (
     <Form {...form}>
+      {showUsage && (
+        <Usage
+          points={usage?.remainingPoints ?? 0}
+          msBeforeNext={usage?.msBeforeNext ?? 0}
+        />
+      )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn(
