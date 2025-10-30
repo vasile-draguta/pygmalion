@@ -14,7 +14,7 @@ export const Navbar = () => {
   return (
     <nav
       className={cn(
-        'p-4 bg-transparent fixed top-0 left-0 right-0 z-0 transition-all duration-200 border-b border-transparent',
+        'p-4 bg-transparent fixed top-0 left-0 right-0 z-1 transition-all duration-200 border-b border-transparent',
         isScrolled && 'bg-background border ease-in-out'
       )}
     >

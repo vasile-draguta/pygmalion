@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { ProjectForm } from '@/modules/home/ui/components/project-form';
 import { ProjectList } from '@/modules/home/ui/components/project-list';
+import { Typer } from '@/modules/home/ui/components/typer';
 
 const Page = () => {
   return (
@@ -17,10 +18,10 @@ const Page = () => {
           />
         </div>
         <h1 className='text-2xl md:text-5xl font-bold text-center'>
-          Let Pygmalion build something
+          Let Pygmalion <Typer />
         </h1>
         <p className='text-lg md:text-cl text-muted-foreground text-center'>
-          Create apps and website by chatting with AI
+          Create websites by chatting with AI
         </p>
         <div className='max-w-3xl mx-auto w-full'>
           <ProjectForm />
