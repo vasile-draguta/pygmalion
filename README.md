@@ -58,7 +58,7 @@ Additionally, you'll need accounts for:
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:vasile-draguta/pygmalion.git
 cd pygmalion
 ```
 
