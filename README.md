@@ -1,36 +1,234 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pygmalion
+
+**Create websites by chatting with AI**
+
+Pygmalion is an AI-powered web application builder that allows users to create complete Next.js websites through natural language conversations. Simply describe what you want to build, and Pygmalion generates a fully functional website in a sandboxed environment with real-time preview capabilities.
+
+## Main Description
+
+Pygmalion leverages advanced AI agents (powered by Google's Gemini) to build production-ready Next.js applications based on user prompts. The system runs code generation and execution in isolated E2B sandboxes, ensuring security while providing users with instant previews of their generated websites. Users can create multiple projects, view their code, and interact with live previews - all managed through an intuitive chat interface.
+
+### Key Features
+
+- 🤖 **AI-Powered Code Generation**: Uses Google Gemini AI with Inngest Agent Kit to generate complete Next.js applications
+- 💬 **Chat Interface**: Natural language conversations to describe and build websites
+- 🎨 **Real-Time Preview**: See your generated websites instantly with live preview and code views
+- 📁 **Project Management**: Create and manage multiple projects with organized message history
+- 🔒 **Secure Sandboxing**: Code execution happens in isolated E2B sandboxes
+- 💳 **Usage Tracking**: Rate limiting and credit system for API usage management
+- 🎯 **Template Library**: Pre-built templates for common website types (Netflix clone, Admin dashboard, Kanban board, etc.)
+
+## What I Learned
+
+Building Pygmalion was an excellent learning experience that covered:
+
+- **Next.js 15 App Router**: Modern React Server Components and client components architecture
+- **tRPC**: Type-safe API layer with end-to-end type safety
+- **Prisma ORM**: Database schema design and migrations with PostgreSQL
+- **Inngest**: Background job processing and AI agent orchestration
+- **Clerk Authentication**: User authentication and authorization
+- **E2B Sandboxes**: Secure code execution environments
+- **Rate Limiting**: Implementation with `rate-limiter-flexible` for API usage control
+- **React Query**: Efficient data fetching and caching
+- **Radix UI & Shadcn**: Accessible component library and design system
+- **Tailwind CSS**: Utility-first styling with custom themes
+- **GSAP Animations**: Smooth animations and transitions
+- **TypeScript**: Type-safe development throughout the stack
+- **Error Boundaries**: Graceful error handling in React applications
+- **Resizable Panels**: Complex UI layouts with interactive resizing
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** 20.x or higher
+- **pnpm** (recommended) or npm/yarn
+- **PostgreSQL** database (local or remote)
+- **Git**
+
+Additionally, you'll need accounts for:
+
+- **Clerk** (for authentication): [https://clerk.com](https://clerk.com)
+- **Inngest** (for background jobs): [https://inngest.com](https://inngest.com)
+- **E2B** (for sandboxes): [https://e2b.dev](https://e2b.dev)
+- **Google Cloud** (for Gemini API): [https://cloud.google.com](https://cloud.google.com)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd pygmalion
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Set Up Environment Variables
 
-## Learn More
+Create a `.env` file in the root directory with the following variables:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/pygmalion?schema=public"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Next.js
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_..."
+CLERK_SECRET_KEY="sk_test_..."
+NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in"
+NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL="/"
+NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL="/"
 
-## Deploy on Vercel
+# Google Gemini AI
+GEMINI_API_KEY="your-gemini-api-key"
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# E2B Sandbox
+E2B_API_KEY="your-e2b-api-key"
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 4. Set Up the Database
+
+Run Prisma migrations to create the database schema:
+
+```bash
+pnpm prisma migrate dev
+```
+
+Generate the Prisma client:
+
+```bash
+pnpm prisma generate
+```
+
+### 5. Run the Development Server
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## Project Structure
+
+```
+pygmalion/
+├── prisma/
+│   ├── schema.prisma          # Database schema
+│   └── migrations/             # Database migrations
+├── src/
+│   ├── app/                    # Next.js app router pages
+│   │   ├── (home)/            # Home route group
+│   │   ├── projects/          # Project pages
+│   │   └── api/               # API routes
+│   ├── components/            # Reusable UI components
+│   │   └── ui/               # Shadcn UI components
+│   ├── modules/              # Feature modules
+│   │   ├── home/             # Home page features
+│   │   ├── projects/         # Project management
+│   │   ├── messages/         # Chat/messages
+│   │   └── usage/            # Usage tracking
+│   ├── inngest/              # Background job functions
+│   ├── lib/                  # Utilities and helpers
+│   ├── trpc/                 # tRPC router configuration
+│   └── generated/            # Generated Prisma client
+├── sandbox-templates/        # E2B sandbox templates
+└── public/                   # Static assets
+```
+
+## Tech Stack
+
+- **Framework**: Next.js 15.5.6 (App Router)
+- **Language**: TypeScript
+- **UI Library**: React 19
+- **Styling**: Tailwind CSS 4
+- **Components**: Radix UI + Shadcn UI
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: Clerk
+- **API**: tRPC
+- **Background Jobs**: Inngest
+- **AI**: Google Gemini (via Inngest Agent Kit)
+- **Sandboxes**: E2B Code Interpreter
+- **State Management**: TanStack Query (React Query)
+- **Forms**: React Hook Form + Zod
+- **Animations**: GSAP
+- **Rate Limiting**: rate-limiter-flexible
+
+## Environment Variables
+
+### Required Variables
+
+- `DATABASE_URL` - PostgreSQL connection string
+- `NEXT_PUBLIC_APP_URL` - Your application URL (e.g., `http://localhost:3000`)
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` - Clerk publishable key from your Clerk dashboard
+- `CLERK_SECRET_KEY` - Clerk secret key from your Clerk dashboard
+- `NEXT_PUBLIC_CLERK_SIGN_IN_URL` - Sign-in page URL (e.g., `/sign-in`)
+- `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL` - Redirect URL after sign-in (e.g., `/`)
+- `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL` - Redirect URL after sign-up (e.g., `/`)
+- `GEMINI_API_KEY` - Google Gemini API key from Google Cloud Console
+- `E2B_API_KEY` - E2B API key for sandbox execution from [e2b.dev](https://e2b.dev)
+
+## Available Scripts
+
+- `pnpm dev` - Start development server with Turbopack
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint
+
+## Database Schema
+
+The application uses the following main models:
+
+- **Project**: User projects with metadata
+- **Message**: Chat messages between user and AI
+- **Fragment**: Generated code fragments with file contents
+- **Usage**: Rate limiting and usage tracking
+
+## How It Works
+
+1. **User Input**: User describes what they want to build via the chat interface
+2. **Message Processing**: Message is saved and triggers an Inngest background job
+3. **AI Agent**: Inngest Agent Kit with Gemini AI generates code using tools:
+   - `terminal` - Run npm commands
+   - `createOrUpdateFiles` - Create/modify files
+   - `readFiles` - Read existing files
+4. **Sandbox Execution**: Code runs in isolated E2B sandbox
+5. **Preview Generation**: Generated website is previewed via sandbox URL
+6. **Code Storage**: Files and metadata are stored in database
+7. **User Interface**: User can view preview, code, and continue conversation
+
+## Features Overview
+
+### Project Management
+
+- Create new projects with custom names
+- View all projects in a list
+- Delete projects
+- Navigate to project details
+
+### Chat Interface
+
+- Real-time message display
+- Conversation history
+- Loading states during generation
+- Error handling
+
+### Code Viewer
+
+- File explorer with tree view
+- Syntax highlighting
+- Copy to clipboard
+- Resizable panels
+
+### Usage Tracking
+
+- Credit-based system
+- Rate limiting per user
+- Usage status display
+- Premium tier support
